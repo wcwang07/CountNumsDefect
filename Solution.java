@@ -2,60 +2,116 @@ import java.util.Arrays;
 
 public class Solution {
 	
-	static int[][] input = {{1,1,1,1,1},{0,0,1,0,0},{0,0,1,0,0}, {0,0,1,0,0}, {1,1,1,1,1}};
+	static int[][] input = {{0,0,0,0,1},{0,0,0,0,1},{0,0,0,0,1}, {0,0,0,0,1}, {0,0,0,0,1}};
 	
-	static boolean hasNeighbor(int x, int y, int[][] arr) {
+	static void hasNeighbor(int x, int y, int[][] arr) {
+		System.out.println("looking at "+x+" "+y+" ");
 		
 		//check north
-		if(x-1>=0 && arr[x-1][y]==1){
-			System.out.println("looking at "+x+" "+y+" ");
-			arr[x][y]=0;
-			hasNeighbor(x-1, y, arr);
-			arr[x-1][y]=0;
-			return true;
-			
+		if(x-1>=0) {
+			System.out.println("north check");
+			if(arr[x-1][y]==1){
+				arr[x][y]=0;
+				System.out.println("set me "+x+" "+y+" "+"to 0 look into x="+(x-1));
+				hasNeighbor(x-1, y, arr);
+				
+			}
+			else { 
+				//point = 0
+				arr[x][y]=0;
+				if(y+1<=arr[x].length-1) {
+					if(arr[x][y+1]==1) {
+						hasNeighbor(x, y+1, arr);
+					}
+					
+				}
+			}
 		}
 		//check east
-		if(y+1<=arr[x].length-1 && arr[x][y+1]==1){
-			System.out.println("looking at "+x+" "+y+" ");
-			arr[x][y]=0;
-			hasNeighbor(x, y+1, arr);
-			arr[x][y+1]=1;
-			return true;
+		if(y+1<=arr[x].length-1) {
+			System.out.println("east check");
+			if(arr[x][y+1]==1){
+				arr[x][y]=0;
+				System.out.println("set me "+x+" "+y+" "+"to 0 look into y="+(y+1));
+				hasNeighbor(x, y+1, arr);
+			}
+			else { 
+				//point = 0, 0
+				arr[x][y]=0;
+				if(x+1<=arr.length-1) {
+					if(arr[x+1][y]==1) {
+						hasNeighbor(x+1, y, arr);
+						
+					}
+					
+				}			
+			}
 		}
+
 		//check south
-		if(x+1<=arr.length-1 && arr[x+1][y]==1){
-			System.out.println("looking at "+x+" "+y+" ");
-			arr[x][y]=0;
-			hasNeighbor(x+1, y, arr);
-			 arr[x+1][y]=0;
-			 return true;
+		if(x+1<=arr.length-1) {
+			System.out.println("south check x= "+x+"y= "+y);
+			if(arr[x+1][y]==1) {
+				arr[x][y]=0;
+				System.out.println("set me "+x+" "+y+" "+"to 0 look into x="+(x+1));
+				hasNeighbor(x+1, y, arr);
+				
+				
+			}
+			else { //point = 0, 0
+				 arr[x][y]=0;
+				 //check west
+				 if(y-1>=0) {
+					 //west exist
+						if(arr[x][y-1]==1) {
+							//
+							hasNeighbor(x, y-1, arr);
+							
+						}
+						
+				}
+			
+			}
 		}
+		
 		//check west
-		if(y-1>=0 && arr[x][y-1]==1){
-			System.out.println("looking at "+x+" "+y+" ");
-			arr[x][y]=0;
-			hasNeighbor(x, y-1, arr);
-			arr[x][y-1]=0;
-			return true;
+		if(y-1>=0) {
+			System.out.println("west check");
+			if(arr[x][y-1]==1) {
+				arr[x][y]=0;
+//				System.out.println("set me "+x+" "+y+" "+"to 0 look into y="+(y-1));
+				hasNeighbor(x, y-1, arr);
+		
+			}
+			else { //point = 0, 0
+				 arr[x][y]=0;
+				 System.out.println("done west check");
+				 return;
+			}
 		}
-		return false;
+		System.out.println("end: done n e s w");
+		return;
 	}
 		
 	public static void main(String[] args) {
 		
 		int count=0;
+		System.out.println("Before...");
 		System.out.println(Arrays.deepToString(input));
 		//find the next defect
 		for(int i=0;i<input.length;i++) {
 			for(int j=0;j<input[i].length;j++) {
-				if(input[i][j]==1 && !hasNeighbor(i,j,input)) {
-				
+				System.out.println("loop: looking at "+i+" "+j+" ");
+				if(input[i][j]==1) {
+					hasNeighbor(i,j,input);
 					count++;
+					System.out.println("count="+count);
+					continue;
+				}
+				
 					
 				}
 			}
-		}
 		System.out.println(count);
 		System.out.println("After...");
 		System.out.println(Arrays.deepToString(input));
