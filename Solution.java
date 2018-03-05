@@ -2,46 +2,42 @@ import java.util.Arrays;
 
 public class Solution {
 	
-	static int[][] input = {{0,0,0,0,1},{0,0,0,0,1},{0,0,0,0,1}, {0,0,0,0,1}, {0,0,0,0,1}};
+	static int[][] input = {{1,0,0},{0,1,0},{0,0,1}};
 	
-	static void hasNeighbor(int x, int y, int[][] arr) {
+	static void markLinkNeighbor(int x, int y, int[][] arr) {
 		System.out.println("looking at "+x+" "+y+" ");
 		
 		//check north
 		if(x-1>=0) {
+			arr[x][y]=0;
 			System.out.println("north check");
-			if(arr[x-1][y]==1){
-				arr[x][y]=0;
-				System.out.println("set me "+x+" "+y+" "+"to 0 look into x="+(x-1));
-				hasNeighbor(x-1, y, arr);
+			if(arr[x-1][y]==1){//arr[x][y] is 1
+				System.out.println("set arr["+x+"]["+y+"]"+"to 0 look into x="+(x-1)+"y="+y);
+				markLinkNeighbor(x-1, y, arr);
 				
 			}
-			else { 
-				//point = 0
-				arr[x][y]=0;
+			else {
+				//arr[x][y]==0, check east
 				if(y+1<=arr[x].length-1) {
 					if(arr[x][y+1]==1) {
-						hasNeighbor(x, y+1, arr);
+						markLinkNeighbor(x, y+1, arr);
 					}
-					
 				}
 			}
 		}
 		//check east
 		if(y+1<=arr[x].length-1) {
 			System.out.println("east check");
-			if(arr[x][y+1]==1){
-				arr[x][y]=0;
-				System.out.println("set me "+x+" "+y+" "+"to 0 look into y="+(y+1));
-				hasNeighbor(x, y+1, arr);
+			arr[x][y]=0;
+			if(arr[x][y+1]==1){//arr[x][y] is 1
+				System.out.println("set arr["+x+"]["+y+"]"+"to 0 look into y="+(y+1)+"x="+x);
+				markLinkNeighbor(x, y+1, arr);
 			}
 			else { 
-				//point = 0, 0
-				arr[x][y]=0;
+				 //arr[x][y]==0, check south
 				if(x+1<=arr.length-1) {
 					if(arr[x+1][y]==1) {
-						hasNeighbor(x+1, y, arr);
-						
+						markLinkNeighbor(x+1, y, arr);
 					}
 					
 				}			
@@ -50,41 +46,31 @@ public class Solution {
 
 		//check south
 		if(x+1<=arr.length-1) {
-			System.out.println("south check x= "+x+"y= "+y);
-			if(arr[x+1][y]==1) {
-				arr[x][y]=0;
-				System.out.println("set me "+x+" "+y+" "+"to 0 look into x="+(x+1));
-				hasNeighbor(x+1, y, arr);
-				
-				
+			System.out.println("south check");
+			arr[x][y]=0;
+			if(arr[x+1][y]==1) {//arr[x][y] is 1
+				System.out.println("set arr["+x+"]["+y+"]"+"to 0 look into x="+(x+1)+"y="+y);
+				markLinkNeighbor(x+1, y, arr);
 			}
-			else { //point = 0, 0
-				 arr[x][y]=0;
-				 //check west
+			else {
+				 //arr[x][y]==0, check west
 				 if(y-1>=0) {
-					 //west exist
-						if(arr[x][y-1]==1) {
-							//
-							hasNeighbor(x, y-1, arr);
-							
-						}
-						
+					if(arr[x][y-1]==1) {
+						markLinkNeighbor(x, y-1, arr);
+					}	
 				}
-			
 			}
 		}
 		
 		//check west
 		if(y-1>=0) {
+			arr[x][y]=0;
 			System.out.println("west check");
 			if(arr[x][y-1]==1) {
-				arr[x][y]=0;
-//				System.out.println("set me "+x+" "+y+" "+"to 0 look into y="+(y-1));
-				hasNeighbor(x, y-1, arr);
-		
+				System.out.println("set arr["+x+"]["+y+"] "+"to 0 look into x="+(x)+"y="+(y-1));
+				markLinkNeighbor(x, y-1, arr);
 			}
-			else { //point = 0, 0
-				 arr[x][y]=0;
+			else { 
 				 System.out.println("done west check");
 				 return;
 			}
@@ -103,7 +89,7 @@ public class Solution {
 			for(int j=0;j<input[i].length;j++) {
 				System.out.println("loop: looking at "+i+" "+j+" ");
 				if(input[i][j]==1) {
-					hasNeighbor(i,j,input);
+					markLinkNeighbor(i,j,input);
 					count++;
 					System.out.println("count="+count);
 					continue;
